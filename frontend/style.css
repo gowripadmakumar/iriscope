@@ -1,0 +1,1014 @@
+/*
+  Module 7 -- IRISCOPE visual identity.
+
+  Direction: an eccentric university laboratory's measurement instrument,
+  not a generic AI product. Two themes, both from project knowledge:
+  MEDICAL CHART (light) and AFTER-HOURS LAB (dark). Structural devices
+  (corner ticks on "specimen" boxes, hairline rules, panel labels) are
+  meant to read as instrument/chart annotations, not decoration -- no
+  rounded cards, no shadows, no gradients, no glow.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'DM Sans', -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  /* Palette roles constant across both themes */
+  --coral: #E76F51;
+  --teal: #2A9D8F;
+  --mustard: #E9C46A;
+
+  /* MEDICAL CHART (light) */
+  --bg: #FFF4DF;
+  --surface: #F7EAD0;
+  --ink: #3D342F;
+  --ink-soft: #7A6A57;
+  --border: rgba(61, 52, 47, 0.24);
+  --warning: #B33F3A;
+}
+
+body[data-theme="dark"] {
+  /* AFTER-HOURS LAB */
+  --bg: #211C19;
+  --surface: #302923;
+  --ink: #FFF4DF;
+  --ink-soft: #C8B9A5;
+  --border: rgba(255, 244, 223, 0.16);
+  --warning: #B94A48;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Author-stylesheet rules below would otherwise beat the browser's own
+   [hidden] default (author origin always wins over user-agent origin,
+   regardless of specificity) -- so anything using the `hidden` attribute
+   needs this restated explicitly. */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.scope {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Header
+--------------------------------------------------------------------- */
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.instrument-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+}
+
+.wordmark h1 {
+  font-size: 2.1rem;
+  letter-spacing: 0.01em;
+}
+
+.tagline {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.core-question {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  margin: 14px 0 0;
+  color: var(--ink);
+}
+
+.wordmark h1 {
+  cursor: default;
+}
+
+.easter-egg-line {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--coral);
+  margin: 6px 0 0;
+  animation: iris-fade-in 0.3s ease;
+}
+
+/* Theme toggle -- a small physical switch, not a glowing pill */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 34px;
+  height: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: inline-block;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  background: var(--coral);
+  transition: transform 0.15s ease;
+}
+
+body[data-theme="dark"] .theme-toggle-thumb {
+  transform: translateX(16px);
+  background: var(--teal);
+}
+
+.theme-toggle-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  min-width: 30px;
+  text-align: left;
+}
+
+/* ---------------------------------------------------------------------
+   Mode nav (Analysis / Match)
+--------------------------------------------------------------------- */
+
+.mode-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.nav-tab {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-soft);
+  padding: 10px 4px;
+  margin-right: 24px;
+  cursor: pointer;
+}
+
+.nav-tab.active {
+  color: var(--ink);
+  border-bottom-color: var(--coral);
+}
+
+/* ---------------------------------------------------------------------
+   Panels
+--------------------------------------------------------------------- */
+
+.panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.panel-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.section-intro {
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+  max-width: 62ch;
+  margin: 0 0 18px;
+}
+
+/* ---------------------------------------------------------------------
+   Input toggle (Upload / Camera)
+--------------------------------------------------------------------- */
+
+.input-toggle {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 14px;
+}
+
+.input-toggle-btn {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.input-toggle-btn.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.mode-panel {
+  margin-bottom: 4px;
+}
+
+/* ---------------------------------------------------------------------
+   Specimen box -- the "under the instrument" preview frame, with
+   corner ticks like a slide mount / crop marks
+--------------------------------------------------------------------- */
+
+.file-drop {
+  display: block;
+  cursor: pointer;
+}
+
+.file-drop input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.specimen-box {
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  background: var(--bg);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.specimen-box-small {
+  min-height: 150px;
+}
+
+.specimen-box::before,
+.specimen-box::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--coral);
+  pointer-events: none;
+}
+
+.specimen-box::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.specimen-box::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+.specimen-box img,
+.specimen-box video {
+  max-width: 100%;
+  max-height: 300px;
+  display: block;
+}
+
+.specimen-box-small img,
+.specimen-box-small video {
+  max-height: 220px;
+}
+
+.specimen-placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+/* Eye-alignment guide overlaid on the live camera feed -- an instrument
+   crosshair, not a decorative graphic. Purely visual (aria-hidden); the
+   text guidance paragraph below still carries the actual instructions. */
+.camera-guide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.camera-guide-svg {
+  width: 70%;
+  max-width: 240px;
+}
+
+.camera-guide-svg ellipse {
+  fill: none;
+  stroke: var(--coral);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.85;
+}
+
+.camera-guide-svg line {
+  stroke: var(--teal);
+  stroke-width: 1.5;
+}
+
+.camera-status {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--teal);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 3px 7px;
+}
+
+.camera-guidance {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border-left: 2px solid var(--teal);
+  background: var(--bg);
+}
+
+.specimen-box img:not([hidden]) ~ .specimen-placeholder,
+.specimen-box video:not([hidden]) ~ .specimen-placeholder {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------
+   Buttons
+--------------------------------------------------------------------- */
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  padding: 11px 18px;
+  border: 1px solid var(--ink);
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible,
+.input-toggle-btn:focus-visible,
+.nav-tab:focus-visible,
+.theme-toggle:focus-visible,
+.file-drop:focus-within {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: #FFF4DF;
+}
+
+.btn-secondary {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.btn-wide {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.btn-small {
+  padding: 7px 12px;
+  font-size: 0.74rem;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* ---------------------------------------------------------------------
+   Status / error text
+--------------------------------------------------------------------- */
+
+.error-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--warning);
+  margin: 10px 0 0;
+}
+
+.error-aside {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 6px 0 0;
+}
+
+.status-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+/* Analysis-in-progress block. status-stage cycles through the pipeline's
+   real stage names while the one /api/analyze request is in flight -- an
+   honest "this is what's happening" indicator, not a claim that the
+   backend is streaming live per-stage progress (it isn't; one request
+   returns one finished result). */
+.status-block {
+  margin: 10px 0 0;
+}
+
+.status-stage {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+.status-stage::before {
+  content: '\25CF ';
+  color: var(--coral);
+  animation: iris-pulse 1s ease-in-out infinite;
+}
+
+.status-aside {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 4px 0 0;
+}
+
+@keyframes iris-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-stage::before {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Result reveal -- one restrained fade/rise, replayed per new result.
+   Respects reduced-motion preference.
+--------------------------------------------------------------------- */
+
+@keyframes iris-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-panel.reveal {
+  animation: iris-fade-in 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-panel.reveal,
+  .easter-egg-line {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Results -- Iris Analysis
+--------------------------------------------------------------------- */
+
+.eye-result {
+  margin-bottom: 26px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.eye-result:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.eye-result-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.eye-result-heading .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.eye-result h3 {
+  font-size: 1.15rem;
+}
+
+.eye-result-summary {
+  margin: 4px 0 12px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.eye-result.failed .eye-result-summary {
+  color: var(--warning);
+}
+
+.eye-result img {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+/* Result hero -- the structure count is the instrument's headline
+   reading, styled like a large diagnostic readout. */
+.result-hero {
+  text-align: center;
+  padding: 6px 0 18px;
+}
+
+.result-hero .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+}
+
+.result-hero-number {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--coral);
+  margin: 6px 0 2px;
+}
+
+.result-hero-caption {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.result-hero-aside {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+.result-metrics {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 20px;
+  padding: 12px 0;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+}
+
+.result-metric-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.86rem;
+}
+
+.result-metric-label {
+  color: var(--ink-soft);
+}
+
+.result-metric-value {
+  font-family: var(--font-mono);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------
+   Interactive stage viewer -- tabs switch between the real pipeline
+   images returned individually by the backend (Module 10).
+--------------------------------------------------------------------- */
+
+.stage-viewer {
+  margin-top: 4px;
+}
+
+.stage-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.stage-tab {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.stage-tab.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.stage-display {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 10px;
+  text-align: center;
+}
+
+.stage-display img {
+  max-width: 100%;
+  max-height: 320px;
+  display: inline-block;
+  cursor: zoom-in;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+}
+
+.stage-display img.stage-image-swap {
+  opacity: 0;
+}
+
+.stage-zoom-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.stage-caption {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  margin: 8px 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-display img {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Stage zoom modal (lightbox) -- click any stage image to enlarge.
+--------------------------------------------------------------------- */
+
+.stage-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.stage-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(33, 28, 25, 0.82);
+}
+
+.stage-modal-content {
+  position: relative;
+  z-index: 1;
+  max-width: min(92vw, 640px);
+  max-height: 90vh;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  text-align: center;
+}
+
+.stage-modal-content img {
+  width: 100%;
+  height: auto;
+  max-height: 72vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.stage-modal-caption {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+.stage-modal-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------
+   Results -- Iris Match
+--------------------------------------------------------------------- */
+
+.match-heading {
+  margin-bottom: 10px;
+}
+
+.match-title {
+  font-size: 1.6rem;
+}
+
+.match-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 4px 0 0;
+}
+
+.match-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .match-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.match-verdict-block {
+  text-align: center;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.match-verdict-block .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.match-compatibility-number {
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  color: var(--coral);
+  line-height: 1;
+}
+
+.match-verdict-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  margin: 10px 0 0;
+}
+
+.match-subscores {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.match-subscore-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 44px;
+  align-items: center;
+  gap: 10px;
+}
+
+.match-subscore-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.match-subscore-bar {
+  height: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.match-subscore-fill {
+  height: 100%;
+  background: var(--teal);
+  width: 0;
+  transition: width 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .match-subscore-fill {
+    transition: none;
+  }
+}
+
+.match-scientific-note {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 6px 0 0;
+  font-style: italic;
+}
+
+.match-subscore-value {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-align: right;
+  color: var(--ink);
+}
+
+.match-eyes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .match-eyes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.match-eye-card .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.match-eye-card img {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.match-disclaimer {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------
+   Footer
+--------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------
+   Small-screen refinements (narrow phones)
+--------------------------------------------------------------------- */
+
+@media (max-width: 400px) {
+  .scope {
+    padding: 20px 14px 48px;
+  }
+
+  .wordmark h1 {
+    font-size: 1.7rem;
+  }
+
+  .core-question {
+    font-size: 1rem;
+  }
+
+  .match-subscore-row {
+    grid-template-columns: 100px 1fr 38px;
+    gap: 8px;
+  }
+
+  .match-compatibility-number {
+    font-size: 2.8rem;
+  }
+}
+
+.site-footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.privacy-note {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  text-align: center;
+  max-width: 60ch;
+  margin: 0 auto;
+}

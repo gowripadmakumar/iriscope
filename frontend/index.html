@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IRISCOPE: an experimental computer-vision tool that detects and counts visible radial texture structures in your iris. Not a medical or biometric tool.">
+<title>IRISCOPE — Because someone had to count them.</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+
+<div class="scope">
+
+<header class="site-header">
+  <p class="instrument-tag">Experimental iris texture analysis &middot; Instrument No. 01</p>
+  <div class="header-row">
+    <div class="wordmark">
+      <h1 id="wordmark-title" title="Nobody asked for this.">IRISCOPE</h1>
+      <p class="tagline">Because someone had to count them.</p>
+      <p id="easter-egg-line" class="easter-egg-line" hidden>Count verified. Science&#8209;ish.</p>
+    </div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode">
+      <span class="theme-toggle-track"><span class="theme-toggle-thumb"></span></span>
+      <span id="theme-toggle-label" class="theme-toggle-label">Light</span>
+    </button>
+  </div>
+  <p class="core-question">How many visible lines are in your iris?</p>
+</header>
+
+<nav class="mode-nav" role="tablist">
+  <button id="nav-analyze-btn" class="nav-tab active" type="button" role="tab" aria-selected="true">Iris Analysis</button>
+  <button id="nav-match-btn" class="nav-tab" type="button" role="tab" aria-selected="false">Iris Match</button>
+</nav>
+
+<main>
+
+  <!-- ============================= IRIS ANALYSIS ============================= -->
+  <section id="analyze-section" class="app-section">
+
+    <div class="panel input-panel">
+      <p class="panel-label">Specimen input</p>
+
+      <div class="input-toggle">
+        <button id="mode-upload-btn" class="input-toggle-btn active" type="button">Upload Photo</button>
+        <button id="mode-camera-btn" class="input-toggle-btn" type="button">Use Camera</button>
+      </div>
+
+      <div id="upload-mode" class="mode-panel">
+        <label class="file-drop" for="file-input">
+          <input type="file" id="file-input" accept="image/jpeg,image/png">
+          <div class="specimen-box">
+            <img id="upload-preview" alt="Upload preview" hidden>
+            <span class="specimen-placeholder">No image selected</span>
+          </div>
+        </label>
+        <button id="analyze-upload-btn" class="btn btn-primary btn-wide" type="button" disabled>Analyze Iris</button>
+      </div>
+
+      <div id="camera-mode" class="mode-panel" hidden>
+        <div class="specimen-box">
+          <video id="camera-video" autoplay playsinline hidden></video>
+          <img id="camera-preview" alt="Captured frame" hidden>
+          <span class="specimen-placeholder">Camera not started</span>
+          <div id="camera-guide" class="camera-guide" hidden aria-hidden="true">
+            <svg class="camera-guide-svg" viewBox="0 0 200 140">
+              <ellipse cx="100" cy="70" rx="52" ry="28"></ellipse>
+              <line x1="8" y1="70" x2="26" y2="70"></line>
+              <line x1="174" y1="70" x2="192" y2="70"></line>
+              <line x1="100" y1="8" x2="100" y2="22"></line>
+              <line x1="100" y1="118" x2="100" y2="132"></line>
+            </svg>
+          </div>
+          <p id="camera-status" class="camera-status" hidden></p>
+        </div>
+        <canvas id="camera-canvas" hidden></canvas>
+        <p id="camera-guidance" class="camera-guidance" hidden>
+          Fill the frame with one eye, hold steady, and keep light in front of
+          you rather than behind &mdash; a bright window behind your head causes glare.
+        </p>
+        <div class="camera-controls">
+          <button id="start-camera-btn" class="btn btn-secondary" type="button">Start Camera</button>
+          <button id="capture-btn" class="btn btn-secondary" type="button" hidden>Capture</button>
+          <button id="retake-btn" class="btn btn-secondary" type="button" hidden>Retake</button>
+        </div>
+        <button id="analyze-camera-btn" class="btn btn-primary btn-wide" type="button" hidden disabled>Analyze Iris</button>
+      </div>
+
+      <p id="input-error" class="error-text" hidden aria-live="polite"></p>
+      <div id="status-block" class="status-block" hidden>
+        <p id="status-stage" class="status-stage" aria-live="polite">Analyzing&hellip;</p>
+        <p class="status-aside">Counting things nobody asked us to count.</p>
+      </div>
+    </div>
+
+    <section id="result-section" class="panel result-panel" hidden aria-live="polite">
+      <p class="panel-label">Reading</p>
+      <div id="result-content"></div>
+    </section>
+
+  </section>
+
+  <!-- =============================== IRIS MATCH =============================== -->
+  <section id="match-section" class="app-section" hidden>
+
+    <div class="match-heading">
+      <h2 class="match-title">Iris Match</h2>
+      <p class="match-subtitle">A completely unnecessary comparison of two irises.</p>
+    </div>
+
+    <p class="section-intro">
+      Two photos, one fictional score. IRIS MATCH compares the detected iris
+      texture from each photo and reports how similar the two readings are —
+      nothing more.
+    </p>
+
+    <div class="match-inputs">
+
+      <div class="panel input-panel">
+        <p class="panel-label">Specimen A</p>
+        <div class="input-toggle">
+          <button id="match-a-mode-upload-btn" class="input-toggle-btn active" type="button">Upload</button>
+          <button id="match-a-mode-camera-btn" class="input-toggle-btn" type="button">Camera</button>
+        </div>
+        <div id="match-a-upload-mode" class="mode-panel">
+          <label class="file-drop" for="match-a-file-input">
+            <input type="file" id="match-a-file-input" accept="image/jpeg,image/png">
+            <div class="specimen-box specimen-box-small">
+              <img id="match-a-upload-preview" alt="Person A preview" hidden>
+              <span class="specimen-placeholder">No image selected</span>
+            </div>
+          </label>
+        </div>
+        <div id="match-a-camera-mode" class="mode-panel" hidden>
+          <div class="specimen-box specimen-box-small">
+            <video id="match-a-camera-video" autoplay playsinline hidden></video>
+            <img id="match-a-camera-preview" alt="Person A captured frame" hidden>
+            <span class="specimen-placeholder">Camera not started</span>
+            <div id="match-a-camera-guide" class="camera-guide" hidden aria-hidden="true">
+              <svg class="camera-guide-svg" viewBox="0 0 200 140">
+                <ellipse cx="100" cy="70" rx="52" ry="28"></ellipse>
+                <line x1="8" y1="70" x2="26" y2="70"></line>
+                <line x1="174" y1="70" x2="192" y2="70"></line>
+                <line x1="100" y1="8" x2="100" y2="22"></line>
+                <line x1="100" y1="118" x2="100" y2="132"></line>
+              </svg>
+            </div>
+            <p id="match-a-camera-status" class="camera-status" hidden></p>
+          </div>
+          <canvas id="match-a-camera-canvas" hidden></canvas>
+          <p id="match-a-camera-guidance" class="camera-guidance" hidden>
+            Fill the frame with one eye and avoid backlighting.
+          </p>
+          <div class="camera-controls">
+            <button id="match-a-start-camera-btn" class="btn btn-secondary btn-small" type="button">Start Camera</button>
+            <button id="match-a-capture-btn" class="btn btn-secondary btn-small" type="button" hidden>Capture</button>
+            <button id="match-a-retake-btn" class="btn btn-secondary btn-small" type="button" hidden>Retake</button>
+          </div>
+        </div>
+        <p id="match-a-error" class="error-text" hidden aria-live="polite"></p>
+      </div>
+
+      <div class="panel input-panel">
+        <p class="panel-label">Specimen B</p>
+        <div class="input-toggle">
+          <button id="match-b-mode-upload-btn" class="input-toggle-btn active" type="button">Upload</button>
+          <button id="match-b-mode-camera-btn" class="input-toggle-btn" type="button">Camera</button>
+        </div>
+        <div id="match-b-upload-mode" class="mode-panel">
+          <label class="file-drop" for="match-b-file-input">
+            <input type="file" id="match-b-file-input" accept="image/jpeg,image/png">
+            <div class="specimen-box specimen-box-small">
+              <img id="match-b-upload-preview" alt="Person B preview" hidden>
+              <span class="specimen-placeholder">No image selected</span>
+            </div>
+          </label>
+        </div>
+        <div id="match-b-camera-mode" class="mode-panel" hidden>
+          <div class="specimen-box specimen-box-small">
+            <video id="match-b-camera-video" autoplay playsinline hidden></video>
+            <img id="match-b-camera-preview" alt="Person B captured frame" hidden>
+            <span class="specimen-placeholder">Camera not started</span>
+            <div id="match-b-camera-guide" class="camera-guide" hidden aria-hidden="true">
+              <svg class="camera-guide-svg" viewBox="0 0 200 140">
+                <ellipse cx="100" cy="70" rx="52" ry="28"></ellipse>
+                <line x1="8" y1="70" x2="26" y2="70"></line>
+                <line x1="174" y1="70" x2="192" y2="70"></line>
+                <line x1="100" y1="8" x2="100" y2="22"></line>
+                <line x1="100" y1="118" x2="100" y2="132"></line>
+              </svg>
+            </div>
+            <p id="match-b-camera-status" class="camera-status" hidden></p>
+          </div>
+          <canvas id="match-b-camera-canvas" hidden></canvas>
+          <p id="match-b-camera-guidance" class="camera-guidance" hidden>
+            Fill the frame with one eye and avoid backlighting.
+          </p>
+          <div class="camera-controls">
+            <button id="match-b-start-camera-btn" class="btn btn-secondary btn-small" type="button">Start Camera</button>
+            <button id="match-b-capture-btn" class="btn btn-secondary btn-small" type="button" hidden>Capture</button>
+            <button id="match-b-retake-btn" class="btn btn-secondary btn-small" type="button" hidden>Retake</button>
+          </div>
+        </div>
+        <p id="match-b-error" class="error-text" hidden aria-live="polite"></p>
+      </div>
+
+    </div>
+
+    <button id="match-btn" class="btn btn-primary btn-wide" type="button" disabled>Compare Irises</button>
+    <p id="match-status" class="status-text" hidden aria-live="polite">Comparing&hellip;</p>
+
+    <section id="match-result-section" class="panel result-panel" hidden aria-live="polite">
+      <p class="panel-label">Reading</p>
+      <div id="match-result-content"></div>
+    </section>
+
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="privacy-note">
+    IRISCOPE processes submitted eye images in memory for experimental visual-texture
+    analysis. Images are not saved, not used for identification or authentication,
+    and this is not a medical diagnostic tool. IRIS MATCH scores are fictional and
+    based only on visual texture — they say nothing real about compatibility,
+    personality, or health.
+  </p>
+</footer>
+
+</div>
+
+<div id="stage-modal" class="stage-modal" hidden>
+  <div class="stage-modal-backdrop" data-modal-close></div>
+  <div class="stage-modal-content" role="dialog" aria-modal="true" aria-labelledby="stage-modal-caption">
+    <button id="stage-modal-close" class="stage-modal-close" type="button" aria-label="Close enlarged view">&times;</button>
+    <img id="stage-modal-image" alt="">
+    <p id="stage-modal-caption" class="stage-modal-caption"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

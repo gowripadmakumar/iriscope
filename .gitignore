@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+*.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Node (frontend has no build step, but ignore if ever introduced)
+node_modules/
+
+# NON-REDISTRIBUTABLE test images and everything derived from them.
+# See data/test_images/LICENSING_NOTE.md -- obama.jpg/obama2.jpg/biden.jpg
+# are official White House photos whose embedded copyright notice forbids
+# manipulation and redistribution; messi5.jpg/fruits.jpg are OpenCV sample
+# images without a confirmed reuse license. Everything under output*/ is a
+# cropped/processed derivative of these same images. None of this may be
+# committed to a public repository until replaced with verified-license
+# source images (see LICENSING_NOTE.md and TEST_REPORT.md section 8).
+data/test_images/*.jpg
+data/test_images/output/
+data/test_images/output_module2/
+data/test_images/output_module3/
+data/test_images/output_module4/
+data/test_images/output_module5/
+!data/test_images/good/
+!data/test_images/challenging/
+!data/test_images/invalid/
