@@ -30,10 +30,10 @@ For Software:
 - Tools used: VS Code, Git, GitHub, Web Browse
 
 For Hardware:
--Main components: Laptop/PC, built-in or USB webcam
+- Main components: Laptop/PC, built-in or USB webcam
 - Specifications: Webcam capable of capturing eye images; minimum 720p recommended
 - Tools required: USB connection (if using an external webcam)
-- 
+
 ### Implementation
 For Software:
 # Installation
