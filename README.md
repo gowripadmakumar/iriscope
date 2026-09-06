@@ -155,6 +155,7 @@ Full pinned versions are in [`requirements.txt`](requirements.txt):
 opencv-python==4.13.0.92
 numpy==2.4.4
 flask==3.1.3
+gunicorn==23.0.0
 ```
 
 `mediapipe` was evaluated early on (for precise iris landmarks via
@@ -200,6 +201,27 @@ development:
 ```bash
 IRISCOPE_DEBUG=1 python run.py
 ```
+
+---
+
+## Hosting
+
+### Render
+
+This repository includes `render.yaml`. Create a new Blueprint on Render and
+select the repository; Render will install the Python dependencies and start
+the Flask app with Gunicorn. The service listens on Render's `PORT` and uses
+`/` as its health check.
+
+### Vercel
+
+This repository includes `vercel.json` and `api/index.py`. Import the
+repository as a Vercel project with the default settings. Vercel routes both
+the static frontend and `/api/*` endpoints through the Flask application.
+
+The computer-vision work is CPU-bound and synchronous. Render is the better
+fit for sustained or larger image workloads; Vercel is useful for a simple
+serverless deployment and demonstrations subject to Vercel function limits.
 
 ---
 
